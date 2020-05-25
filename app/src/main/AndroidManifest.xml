@@ -8,8 +8,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.StatusBar">
-        <activity android:name=".InfoActivity"></activity>
+        android:theme="@style/Theme.Cosming">
+        <activity android:name=".MytoolbarActivity"></activity>
+        <activity android:name=".InfoActivity" />
         <activity android:name=".LikeActivity" />
         <activity android:name=".RecordActivity" />
         <activity android:name=".MainActivity">

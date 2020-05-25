@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ActionBar actionBar = getSupportActionBar();//액션바 숨기기
-        actionBar.hide();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();//액션바 숨기기
 
         record = (ImageView)findViewById(R.id.record);
         like = (ImageView)findViewById(R.id.like);
