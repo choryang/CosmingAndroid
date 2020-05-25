@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme.StatusBar" parent="AppTheme">
+        <!--Status Bar 배경색-->
+        <item name="android:statusBarColor">#777777</item>
+    </style>
+</resources>
