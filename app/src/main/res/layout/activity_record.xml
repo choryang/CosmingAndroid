@@ -6,4 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
 
+    <include
+        android:id="@+id/mytoolbar"
+        layout="@layout/activity_mytoolbar"/>
+
 </LinearLayout>

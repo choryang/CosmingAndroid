@@ -2,7 +2,9 @@ package com.example.cosmingtest;
 
 import android.os.Bundle;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class LikeActivity extends AppCompatActivity {
 
@@ -11,5 +13,15 @@ public class LikeActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_like);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.mytoolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowTitleEnabled(false);//기본 제목을 없애줍니다.
+
+
+
+
     }
 }
