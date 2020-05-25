@@ -1,0 +1,2 @@
+rootProject.name='CosmingTest'
+include ':app'
