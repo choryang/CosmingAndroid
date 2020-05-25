@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
 
-    private ArrayList<RecordData> arrayList;
+    private ArrayList<MainData> arrayList;
     private RecordAdapter mainadapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -35,11 +35,11 @@ public class RecordActivity extends AppCompatActivity {
         mainadapter = new RecordAdapter(arrayList);
         recyclerView.setAdapter(mainadapter);
 
-        RecordData recordData;
+        MainData mainData;
 
         for(int i = 0; i < 10; i++){
-            recordData = new RecordData(R.mipmap.ic_launcher,"2020-02-02", "23:02:04");
-            arrayList.add(recordData);
+            mainData = new MainData(R.mipmap.ic_launcher,"2020-02-02", "23:02:04","","","","","");
+            arrayList.add(mainData);
         }
 
         mainadapter.notifyDataSetChanged();

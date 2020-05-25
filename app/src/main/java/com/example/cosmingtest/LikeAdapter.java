@@ -3,6 +3,7 @@ package com.example.cosmingtest;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHolder> {
-    private ArrayList<LikeData> arrayList;
+    private ArrayList<MainData> arrayList;
 
-    public LikeAdapter(ArrayList<LikeData> arrayList) {
+    public LikeAdapter(ArrayList<MainData> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -30,6 +31,7 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final LikeAdapter.CustomViewHolder holder, int position) {
+        holder.iv_profile.setImageResource(arrayList.get(position).getIv_profile());
         holder.cos_name.setText(arrayList.get(position).getCos_name());
         holder.cos_type.setText(arrayList.get(position).getCos_type());
         holder.open_date.setText(arrayList.get(position).getOpen_date());
@@ -75,6 +77,7 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHold
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
+        protected ImageView iv_profile;
         protected TextView cos_name;
         protected TextView cos_type;
         protected TextView open_date;
@@ -82,6 +85,7 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.CustomViewHold
         protected TextView memo;
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
+            this.iv_profile = (ImageView) itemView.findViewById(R.id.iv_profile);
             this.cos_name = (TextView) itemView.findViewById(R.id.cos_name);
             this.cos_type = (TextView) itemView.findViewById(R.id.cos_type);
             this.open_date = (TextView) itemView.findViewById(R.id.open_date);

@@ -14,9 +14,9 @@ import java.util.ArrayList;
 
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.CustomViewHolder> {
-    private ArrayList<RecordData> arrayList;
+    private ArrayList<MainData> arrayList;
 
-    public RecordAdapter(ArrayList<RecordData> arrayList) {
+    public RecordAdapter(ArrayList<MainData> arrayList) {
         this.arrayList = arrayList;
     }
 

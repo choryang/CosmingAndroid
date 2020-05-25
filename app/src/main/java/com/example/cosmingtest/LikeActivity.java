@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class LikeActivity extends AppCompatActivity {
 
-    private ArrayList<LikeData> arrayList;
+    private ArrayList<MainData> arrayList;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
@@ -31,10 +31,10 @@ public class LikeActivity extends AppCompatActivity {
         LikeAdapter mainAdapter = new LikeAdapter(arrayList);
         recyclerView.setAdapter(mainAdapter);
 
-        LikeData mainData;
+        MainData mainData;
 
         for(int i = 0; i < 10; i++){
-            mainData = new LikeData("핑크 어쩌구 세럼","제품 유형","2020-02-24","2021-02-24","우와아아아아아아아아");
+            mainData = new MainData(R.mipmap.ic_launcher,"","","핑크 어쩌구 세럼","제품 유형","2020-02-24","2021-02-24","우와아아아아아아아아");
             arrayList.add(mainData);
         }
 
