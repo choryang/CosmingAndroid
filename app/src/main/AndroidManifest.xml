@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cosmingtest">
 
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cosming">
-        <activity android:name=".MytoolbarActivity"></activity>
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".MytoolbarActivity" />
         <activity android:name=".InfoActivity" />
         <activity android:name=".LikeActivity" />
         <activity android:name=".RecordActivity" />

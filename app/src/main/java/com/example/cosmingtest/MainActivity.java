@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    ImageView search;
     ImageView record;
     ImageView like;
     ImageView info;
@@ -18,11 +19,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        
 
+        search = (ImageView) findViewById(R.id.search);
         record = (ImageView)findViewById(R.id.record);
         like = (ImageView)findViewById(R.id.like);
         info = (ImageView)findViewById(R.id.info);
+
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent search_intent = new Intent(MainActivity.this, SearchActivity.class);
+                startActivity(search_intent);
+            }
+        });
 
         record.setOnClickListener(new View.OnClickListener() {
             @Override
