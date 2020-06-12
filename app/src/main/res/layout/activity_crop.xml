@@ -24,7 +24,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="90dp"
             android:layout_marginBottom="15dp"
-            android:layout_gravity="center"
+            android:gravity="center"
             android:background="@drawable/cropborder">
 
             <ImageView
@@ -40,7 +40,7 @@
             android:layout_height="65dp"
             android:orientation="vertical"
             android:gravity="center"
-            android:background="@drawable/common">
+            android:background="@drawable/commonlayout">
 
             <ImageView
                 android:layout_width="20dp"

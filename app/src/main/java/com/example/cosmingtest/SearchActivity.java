@@ -119,7 +119,7 @@ public class SearchActivity extends AppCompatActivity {
 
         Bitmap bitmap = null;
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 5;
+        options.inSampleSize = 4;
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bitmap temp_bitmap = BitmapFactory.decodeFile(image_file_path, options);
@@ -161,9 +161,9 @@ public class SearchActivity extends AppCompatActivity {
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
+                byte[] byte_array = stream.toByteArray();
                 Intent intentView = new Intent(getApplicationContext(), CropActivity.class);
-                intentView.putExtra("image", byteArray);
+                intentView.putExtra("image", byte_array);
                 startActivity(intentView);
             }
             catch (Exception e) {
