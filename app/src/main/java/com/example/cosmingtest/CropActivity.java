@@ -24,7 +24,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
@@ -61,13 +64,9 @@ public class CropActivity extends AppCompatActivity {
         re_search = findViewById(R.id.re_search);
         go_result = findViewById(R.id.go_result);
 
-        byte_array = getIntent().getByteArrayExtra("image");
         uri = getIntent().getStringExtra("uri");
         image_uri = Uri.parse(uri);
-        Bitmap bm = BitmapFactory.decodeByteArray(byte_array, 0, byte_array.length);
-
-        image_view.setImageBitmap(bm);
-        img_base64 = Base64.encodeToString(byte_array, Base64.DEFAULT);
+        image_view.setImageURI(image_uri);
 
         re_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,17 +96,15 @@ public class CropActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // handle result of CropImageActivity
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
-                image_view.setImageURI(result.getUri());
-                Toast.makeText(
-                        this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
-                        .show();
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+                image_uri = result.getUri();
+                Toast.makeText(this, "crop success", Toast.LENGTH_SHORT).show();
+            }
+            else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -185,6 +182,22 @@ public class CropActivity extends AppCompatActivity {
 
     }
 
+    void UriToBase64(Uri image_uri) throws FileNotFoundException {
+        InputStream is = getContentResolver().openInputStream(image_uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(is);
+        if( bitmap != null ) {
+            try {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byte_array = stream.toByteArray();
+                img_base64 = Base64.encodeToString(byte_array, Base64.DEFAULT);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     void parseJSON(String input) throws JSONException {
 
         //이전 성분 x좌표
@@ -233,7 +246,7 @@ public class CropActivity extends AppCompatActivity {
         }
 
         Intent result_intent = new Intent(CropActivity.this, ResultActivity.class);
-        result_intent.putExtra("image", byte_array);
+        result_intent.putExtra("image", image_uri);
         result_intent.putExtra("read_words", read_words);
         startActivity(result_intent);
     }
