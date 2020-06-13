@@ -14,11 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cosming">
-        <activity android:name=".LikepopActivity"></activity>
+        <activity
+            android:name=".LikepopActivity"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".DeleteActivity" />
         <activity android:name=".ResultActivity" />
         <activity android:name=".CropActivity" />
-        <activity android:name=".SearchActivity" />
+        <activity
+            android:name=".SearchActivity"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".MytoolbarActivity" />
         <activity android:name=".InfoActivity" />
         <activity android:name=".LikeActivity" />

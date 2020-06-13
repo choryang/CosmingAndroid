@@ -3,4 +3,6 @@
     <color name="colorPrimary">#59b0c1e8</color>
     <color name="colorText">#035eac</color>
     <color name="colorWhite">#ffffff</color>
+    <!--원하는 색상 추가-->
+    <color name="transparent">#00000000</color>
 </resources>

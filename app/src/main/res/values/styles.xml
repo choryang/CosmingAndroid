@@ -7,10 +7,11 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
-    <style name="Dialog" parent="android:style/Theme.Dialog">
-        <item name="android:windowBackground">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">true</item>
+    <!-- 새로운 투명 Activity 테마 설정 -->
+    <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
     </style>
 
 </resources>

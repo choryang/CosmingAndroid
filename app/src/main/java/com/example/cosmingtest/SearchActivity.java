@@ -93,7 +93,21 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.closebtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(0, 0);
+            }
+        });
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(0, 0);
     }
 
     private File createImageFile() throws IOException {
