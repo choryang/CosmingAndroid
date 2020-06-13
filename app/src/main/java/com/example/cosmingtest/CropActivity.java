@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -150,15 +151,51 @@ public class CropActivity extends AppCompatActivity {
     }
 
     void parseJSON(String input) throws JSONException {
-        //String inputLine = String(input.toByteArray(Charsets.ISO_8859_1), Charsets.UTF_8);
 
-            JSONArray fields = (new JSONObject(input).getJSONArray("images").getJSONObject(0)).getJSONArray("fields");
+        //이전 성분 x좌표
+        int prevX = 0;
+        int nextX;//현재 성분 x좌표
+        int comma = -1;
+        StringBuffer prevText = new StringBuffer();
+        StringBuffer nextText= new StringBuffer();
 
-            for (int i = 0; i < fields.length(); i++) {
-                String inferText = (fields.getJSONObject(i)).getString("inferText");
-                read_words.add(inferText);
+        JSONArray fields = (new JSONObject(input).getJSONArray("images").getJSONObject(0)).getJSONArray("fields");
+
+        for (int i = 0; i < fields.length(); i++) {
+            String inferText = (fields.getJSONObject(i)).getString("inferText"); // 끝에 ,존재여부 파악을 위한 온전한 성분명 문자열
+            String splitText[] = (fields.getJSONObject(i)).getString("inferText").split(",");
+            nextX = (fields.getJSONObject(i)).getJSONObject("boundingPoly").getJSONArray("vertices").getJSONObject(2).getInt("x");
+            if (splitText.length > 1){// 하나의 성분명 사이에 ,가 포함된 경우
+                nextText.replace(0, nextText.length(), splitText[0]);
+                for (int j = 1; j < splitText.length; j++) {//,로 다시 이어 붙인다.
+                    nextText.append(",");
+                    nextText.append(splitText[j]);
+                }
+            }
+            else {//,가 포함되어 있지 않은 경우
+                nextText.replace(0, nextText.length(), splitText[0]);
             }
 
+            if (prevX > nextX && comma == 0 && read_words.size() > 1) {//줄바꿈이 생긴 경우
+                // 줄바꿈을 기준으로 하나의 성분인 경우 >> 줄바뀜이 일어났고 ,로 구분되지 않았기 때문에 하나의 성분으로 판단
+                read_words.remove(prevText.toString());
+                prevText.append(nextText.toString()); // 이전의 성분명과 현재 성분명을 이어 붙인다.
+                nextText.replace(0, nextText.length(), prevText.toString());
+            }
+
+            Log.i("text", nextText.toString());
+            read_words.add(nextText.toString());
+            prevX = nextX;
+            prevText.replace(0, prevText.length(), nextText.toString());
+
+            if (inferText.charAt(inferText.length() - 1) == ',') {
+                comma = 1;
+            }
+            else {
+                comma = 0;
+            }
+
+        }
 
         Intent result_intent = new Intent(CropActivity.this, ResultActivity.class);
         result_intent.putExtra("image", byte_array);
