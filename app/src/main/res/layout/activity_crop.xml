@@ -38,6 +38,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/cropbtn"
             android:layout_width="310dp"
             android:layout_height="65dp"
             android:orientation="vertical"

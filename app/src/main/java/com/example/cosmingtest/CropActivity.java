@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Base64;
@@ -11,8 +12,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +39,10 @@ public class CropActivity extends AppCompatActivity {
     public static Activity crop_activity;
     byte[] byte_array;
     String img_base64 = "";
+    String uri;
+    Uri image_uri;
     ArrayList<String> read_words = new ArrayList<>();
+    LinearLayout crop_btn;
     ImageView image_view;
     Button re_search;
     Button go_result;
@@ -48,11 +56,14 @@ public class CropActivity extends AppCompatActivity {
         crop_activity = CropActivity.this;
         sa.finish();
 
+        crop_btn = findViewById(R.id.cropbtn);
         image_view = findViewById(R.id.cr_image);
         re_search = findViewById(R.id.re_search);
         go_result = findViewById(R.id.go_result);
 
         byte_array = getIntent().getByteArrayExtra("image");
+        uri = getIntent().getStringExtra("uri");
+        image_uri = Uri.parse(uri);
         Bitmap bm = BitmapFactory.decodeByteArray(byte_array, 0, byte_array.length);
 
         image_view.setImageBitmap(bm);
@@ -69,14 +80,38 @@ public class CropActivity extends AppCompatActivity {
         go_result.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent result_intent = new Intent(CropActivity.this, ResultActivity.class);
-                result_intent.putExtra("image", byte_array);
-                startActivity(result_intent);*/
                 OCRAsyncTask task = new OCRAsyncTask();
                 task.execute();
             }
         });
+
+        crop_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CropImage.activity(image_uri)
+                        .start(CropActivity.this);
+            }
+        });
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle result of CropImageActivity
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                image_view.setImageURI(result.getUri());
+                Toast.makeText(
+                        this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
+                        .show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 
     private static class OCRAsyncTask extends AsyncTask<Void, Void, String> {
         String OCR_URL = "https://b12841e405a34032b6a5fd63f068b23d.apigw.ntruss.com/custom/v1/1615/eada0214517a4a0bf4b65aaed4d9146974afa129efd07030d26e13f63bba3638/general";

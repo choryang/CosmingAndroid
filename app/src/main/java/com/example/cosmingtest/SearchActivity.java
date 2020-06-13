@@ -41,6 +41,7 @@ public class SearchActivity extends AppCompatActivity {
     public static Activity search_activity;
     private String image_file_path;
     private Uri photo_uri;
+    private Uri gallery_uri;
     CropActivity ca = (CropActivity)CropActivity.crop_activity;
 
     @Override
@@ -161,7 +162,7 @@ public class SearchActivity extends AppCompatActivity {
         options.inJustDecodeBounds = true;
 
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            if (ca != null) {
+            /*if (ca != null) {
                 ca.finish(); // 이전의 이미지 편집화면 종료
             }
             // inJustDecodeBounds = true일때
@@ -181,7 +182,7 @@ public class SearchActivity extends AppCompatActivity {
                 bitmap = rotate(temp_bitmap, exifDegree);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         }
         else if (requestCode == REQUEST_IMAGE_GALLERY && resultCode == Activity.RESULT_OK) {
@@ -189,6 +190,7 @@ public class SearchActivity extends AppCompatActivity {
                 ca.finish(); // 이전의 이미지 편집화면 종료
             }
             try {
+                gallery_uri = data.getData();
                 InputStream is = getContentResolver().openInputStream(data.getData());
                 BitmapFactory.decodeStream(is, null, options);
                 options.inSampleSize = setSimpleSize(options, REQUEST_WIDTH, REQUEST_HEIGHT);
@@ -212,6 +214,7 @@ public class SearchActivity extends AppCompatActivity {
                 byte[] byte_array = stream.toByteArray();
                 Intent intentView = new Intent(getApplicationContext(), CropActivity.class);
                 intentView.putExtra("image", byte_array);
+                intentView.putExtra("uri", gallery_uri.toString());
                 startActivity(intentView);
             }
             catch (Exception e) {
