@@ -25,7 +25,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,11 +39,8 @@ import java.util.ArrayList;
 public class CropActivity extends AppCompatActivity {
 
     public static Activity crop_activity;
-    byte[] byte_array;
-    String img_base64 = "";
     String uri;
     Uri image_uri;
-    ArrayList<String> read_words = new ArrayList<>();
     LinearLayout crop_btn;
     ImageView image_view;
     Button re_search;
@@ -101,29 +97,47 @@ public class CropActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 image_uri = result.getUri();
-                Toast.makeText(this, "crop success", Toast.LENGTH_SHORT).show();
+                image_view.setImageURI(image_uri);
             }
             else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "이미지 편집에 실패하였습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
 
-    private static class OCRAsyncTask extends AsyncTask<Void, Void, String> {
+    private class OCRAsyncTask extends AsyncTask<Void, Void, String> { //doInBackground 리턴값 필요없는데 어떻게 없애지
         String OCR_URL = "https://b12841e405a34032b6a5fd63f068b23d.apigw.ntruss.com/custom/v1/1615/eada0214517a4a0bf4b65aaed4d9146974afa129efd07030d26e13f63bba3638/general";
         String OCR_KEY = "VklxeHJhUldVRWdUdE5SeWNDdVFzWmNyZ1NuYVRUWkg=";
         WeakReference activity_reference = new WeakReference(crop_activity);
         CropActivity activity = (CropActivity)activity_reference.get();
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
         @Override
         protected String doInBackground(Void... params) {
             // 1. 웹 연결
             URL url;
             HttpURLConnection connection = null;
+            String img_base64 = null;
+            byte[] byte_array = null; //parseJSON 함수에 전달
 
             try {
+                Log.i("uri", image_uri.toString());
+                InputStream is = getContentResolver().openInputStream(image_uri);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 8;
+                Bitmap bitmap = BitmapFactory.decodeStream(is, null, options);
+                if( bitmap != null ) {
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                    byte_array = stream.toByteArray();
+                    img_base64 = Base64.encodeToString(byte_array, Base64.DEFAULT);
+                }
+
                 url = new URL(OCR_URL);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
@@ -146,7 +160,7 @@ public class CropActivity extends AppCompatActivity {
                 JSONObject imageData = new JSONObject();
                 imageData.put("format", "jpg");
                 imageData.put("name", "sample");
-                imageData.put("data", activity.img_base64);
+                imageData.put("data", img_base64);
 
                 JSONArray image = new JSONArray();
                 image.put(imageData);
@@ -171,34 +185,16 @@ public class CropActivity extends AppCompatActivity {
                 output.close();
 
                 input = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-                activity.parseJSON(input.readLine());
+                activity.parseJSON(input.readLine(), byte_array);
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-
-            return ""; //return이 필요함
-
+            return "";
         }
 
     }
 
-    void UriToBase64(Uri image_uri) throws FileNotFoundException {
-        InputStream is = getContentResolver().openInputStream(image_uri);
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-        if( bitmap != null ) {
-            try {
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byte_array = stream.toByteArray();
-                img_base64 = Base64.encodeToString(byte_array, Base64.DEFAULT);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    void parseJSON(String input) throws JSONException {
+    void parseJSON(String input, byte[] byte_array) throws JSONException {
 
         //이전 성분 x좌표
         int prevX = 0;
@@ -206,6 +202,7 @@ public class CropActivity extends AppCompatActivity {
         int comma = -1;
         StringBuffer prevText = new StringBuffer();
         StringBuffer nextText= new StringBuffer();
+        ArrayList<String> read_words = new ArrayList<>();
 
         JSONArray fields = (new JSONObject(input).getJSONArray("images").getJSONObject(0)).getJSONArray("fields");
 
@@ -246,7 +243,7 @@ public class CropActivity extends AppCompatActivity {
         }
 
         Intent result_intent = new Intent(CropActivity.this, ResultActivity.class);
-        result_intent.putExtra("image", image_uri);
+        result_intent.putExtra("image", byte_array);
         result_intent.putExtra("read_words", read_words);
         startActivity(result_intent);
     }

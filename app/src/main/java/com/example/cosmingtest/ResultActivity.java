@@ -1,6 +1,7 @@
 package com.example.cosmingtest;
 
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -13,8 +14,6 @@ public class ResultActivity extends AppCompatActivity {
 
     ImageView imageView;
     byte[] byte_array;
-    String uri;
-    Uri image_uri;
     ArrayList<String> data;
 
     @Override
@@ -24,10 +23,10 @@ public class ResultActivity extends AppCompatActivity {
 
         imageView = findViewById(R.id.rs_image);
 
-        uri = getIntent().getStringExtra("image");
-        image_uri = Uri.parse(uri);
         data = (ArrayList<String>)getIntent().getSerializableExtra("read_words");
-        imageView.setImageURI(image_uri);
+        byte_array = getIntent().getByteArrayExtra("image");
+        Bitmap bitmap = BitmapFactory.decodeByteArray(byte_array, 0, byte_array.length);
+        imageView.setImageBitmap(bitmap);
 
         for(int i = 0; i < data.size(); i++) {
             Log.i("array", data.get(i));
