@@ -17,7 +17,9 @@
         <activity
             android:name=".LikepopActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
-        <activity android:name=".DeleteActivity" />
+        <activity
+            android:name=".DeleteActivity"
+            android:theme="@style/Theme.AppCompat.Translucent" />
         <activity android:name=".ResultActivity" />
         <activity android:name=".CropActivity" />
         <activity

@@ -15,6 +15,7 @@ public class LikepopActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(0, 0);//화면 전환 애니메이션 삭제
         setContentView(R.layout.activity_likepop);
         final String[] year = getResources().getStringArray(R.array.year);
         final String[] month = getResources().getStringArray(R.array.month);
@@ -28,5 +29,11 @@ public class LikepopActivity extends AppCompatActivity {
         spinner_year.setAdapter(adapter_year);
         spinner_month.setAdapter(adapter_month);
         spinner_day.setAdapter(adapter_day);
+    }
+
+    @Override
+    public void onBackPressed() { // 뒤로가기 버튼 눌렀을 때
+        super.onBackPressed();
+        overridePendingTransition(0, 0);//화면 전환 애니메이션 삭제
     }
 }
