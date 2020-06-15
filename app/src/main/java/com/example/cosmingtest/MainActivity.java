@@ -53,10 +53,8 @@ public class MainActivity extends AppCompatActivity {
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent info_intent = new Intent(MainActivity.this, InfoActivity.class);
-                startActivity(info_intent);*/
-                Intent search_intent = new Intent(MainActivity.this, ResultActivity.class);
-                startActivity(search_intent);
+                Intent info_intent = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(info_intent);
             }
         });
 

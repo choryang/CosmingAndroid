@@ -47,9 +47,12 @@
                 android:id="@+id/ing_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingVertical="5dp"
+                android:paddingLeft="3dp"
+                android:background="#22035eac"
                 android:textColor="@color/colorText"
                 android:layout_marginBottom="10dp"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:text="세테아릴알코올"/>
 
@@ -57,9 +60,9 @@
             <TextView
                 android:id="@+id/ing_purpose"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:paddingVertical="3dp"
-                android:background="#22035eac"
+                android:paddingLeft="3dp"
                 android:textColor="@color/colorText"
                 android:textSize="13sp"
                 android:text="배합목적 배합목적 배합목적 배합목적"/>
@@ -70,7 +73,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorText">
     </View>
 

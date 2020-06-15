@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class RecordActivity extends AppCompatActivity {
 
     private ArrayList<MainData> arrayList;
-    private RecordAdapter mainadapter;
+    private RecordAdapter recordAdapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
 
@@ -32,8 +32,8 @@ public class RecordActivity extends AppCompatActivity {
 
         arrayList = new ArrayList<>();
 
-        mainadapter = new RecordAdapter(arrayList);
-        recyclerView.setAdapter(mainadapter);
+        recordAdapter = new RecordAdapter(arrayList);
+        recyclerView.setAdapter(recordAdapter);
 
         MainData mainData;
 
@@ -42,7 +42,7 @@ public class RecordActivity extends AppCompatActivity {
             arrayList.add(mainData);
         }
 
-        mainadapter.notifyDataSetChanged();
+        recordAdapter.notifyDataSetChanged();
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.mytoolbar);
         setSupportActionBar(toolbar);

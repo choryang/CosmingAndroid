@@ -234,10 +234,10 @@ public class CropActivity extends AppCompatActivity {
             prevText.replace(0, prevText.length(), nextText.toString());
 
             if (inferText.charAt(inferText.length() - 1) == ',') {
-                comma = 1;
+                comma = 1;//문자열의 끝자리가 ,
             }
             else {
-                comma = 0;
+                comma = 0;//,가 아님
             }
 
         }
